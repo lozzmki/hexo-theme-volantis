@@ -233,6 +233,7 @@ comments:
     lang: zh-cn
     highlight: true
     mathJax: false
+    visitor: true
   # MiniValine
   # https://github.com/MiniValine/MiniValine
   minivaline:
