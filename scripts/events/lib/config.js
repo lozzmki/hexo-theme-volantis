@@ -15,6 +15,23 @@ function merge(target, source) {
   return target;
 }
 
+// hexo.config.root or hexo.theme.config.cdn.prefix + /media/ or /libs/
+function checkLibPrefix(source,hexo) {
+  for (const key in source) {
+    if (isObject(source[key])) {
+      checkLibPrefix(source[key],hexo);
+    } else if(source[key] && typeof source[key] =="string") {
+      if(source[key].match(/^\/media\//g)||source[key].match(/^\/libs\//g)){
+        if(hexo.theme.config.cdn.enable&&hexo.theme.config.cdn.prefix){
+          source[key] = hexo.theme.config.cdn.prefix + source[key]
+        }else if(hexo.config.root){
+          source[key] = hexo.config.root + source[key].slice(1)
+        }
+      }
+    }
+  }
+}
+
 module.exports = hexo => {
   if (!hexo.locals.get) return;
 
@@ -22,16 +39,17 @@ module.exports = hexo => {
   if (!data) return;
 
   /**
-   * Merge configs from _data/next.yml into hexo.theme.config.
-   * If `override`, configs in next.yml will rewrite configs in hexo.theme.config.
-   * If next.yml not exists, merge all `theme_config.*` into hexo.theme.config.
+   * Merge configs from _data/volantis.yml into hexo.theme.config.
+   * If `override`, configs in volantis.yml will rewrite configs in hexo.theme.config.
+   * If volantis.yml not exists, merge all `theme_config.*` into hexo.theme.config.
    */
-  if (data.next) {
-    if (data.next.override) {
-      hexo.theme.config = data.next;
+
+  if (data.volantis) {
+    if (data.volantis.override) {
+      hexo.theme.config = data.volantis;
     } else {
-      merge(hexo.config, data.next);
-      merge(hexo.theme.config, data.next);
+      merge(hexo.config, data.volantis);
+      merge(hexo.theme.config, data.volantis);
     }
   } else {
     merge(hexo.theme.config, hexo.config.theme_config);
@@ -60,4 +78,5 @@ module.exports = hexo => {
       mergeLang(language);
     }
   }
+  checkLibPrefix(hexo.theme.config,hexo)
 };

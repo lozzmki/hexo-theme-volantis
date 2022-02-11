@@ -7,7 +7,12 @@ function postBtns(args, content) {
 }
 
 function postCell(args, content) {
-  args = args.join(' ').split(',');
+  if(/::/g.test(args)){
+    args = args.join(' ').split('::');
+  }
+  else{
+    args = args.join(' ').split(',');
+  }
   let text = args[0] || '';
   let url = args[1] || '';
   text = text.trim();
@@ -16,7 +21,7 @@ function postCell(args, content) {
     url = 'href=\'' + url + '\'';
   }
   let icon = '';
-  let img = 'https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@3/img/placeholder/d570170f4f12e1ee829ca0e85a7dffeb77343a.svg';
+  let img = hexo.theme.config.default.image;
   if (args.length > 2) {
     if (args[2].indexOf(' fa-') > -1) {
       icon = args[2].trim();
