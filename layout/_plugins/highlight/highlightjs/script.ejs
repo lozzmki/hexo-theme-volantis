@@ -9,6 +9,7 @@
   volantis.pjax.push(()=>{
     document.querySelectorAll('pre code').forEach((block) => {
       hljs.highlightElement(block);
+      hljs.lineNumbersBlock(block, { singleLine: true });
     });
   },"highlightjs")
 <% } %>
