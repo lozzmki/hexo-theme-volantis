@@ -6,9 +6,13 @@
   volantis.js("<%- theme.plugins.highlightjs.js %>").then(()=>{
     volantis.requestAnimationFrame(hljs.highlightAll)
   })
+<% if (theme.plugins.highlightjs.numjs) { %>
+    volantis.js("<%- theme.plugins.highlightjs.numjs %>")
+<% } %>
   volantis.pjax.push(()=>{
     document.querySelectorAll('pre code').forEach((block) => {
       hljs.highlightElement(block);
+      hljs.lineNumbersBlock(block, { singleLine: true });
     });
   },"highlightjs")
 <% } %>
