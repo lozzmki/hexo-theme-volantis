@@ -1,18 +1,18 @@
 <% if (theme.plugins.highlightjs.js) { %>
-    <%- js(theme.plugins.highlightjs.js) %>
-        <% if (theme.plugins.highlightjs.numjs) { %>
-            <%- js(theme.plugins.highlightjs.numjs) %>
-                <% } %>
-                    <script>
-                        hljs.initHighlightingOnLoad();
-                        hljs.initLineNumbersOnLoad();
-                    </script>
-                    <% } %>
-                        <script>
-                            volantis.pjax.push(() => {
-                                document.querySelectorAll('pre code').forEach((block) => {
-                                    hljs.highlightBlock(block);
-                                    hljs.lineNumbersBlock(block);
-                                });
-                            }, "highlightjs")
-                        </script>
+<%- js(theme.plugins.highlightjs.js) %>
+<% if (theme.plugins.highlightjs.numjs) { %>
+<%- js(theme.plugins.highlightjs.numjs) %>
+<% } %>
+<script>
+    hljs.initHighlightingOnLoad();
+    hljs.initLineNumbersOnLoad({ singleLine: true });
+</script>
+<% } %>
+<script>
+    volantis.pjax.push(() => {
+        document.querySelectorAll('pre code').forEach((block) => {
+            hljs.highlightBlock(block);
+            hljs.lineNumbersBlock(block, { singleLine: true });
+        });
+    }, "highlightjs")
+</script>
